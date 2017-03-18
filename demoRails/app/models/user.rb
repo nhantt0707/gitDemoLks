@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
+  has_many :microposts, dependent: :destroy
   before_create :create_activation_digest
   validates :name,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -37,6 +38,9 @@ class User < ApplicationRecord
   # Sends password reset email.
   def send_password_reset_email
     UserMailer.password_reset(self).deliver_now
+  end
+  def feed
+    Micropost.where("user_id = ?", id)
   end
 
   private
