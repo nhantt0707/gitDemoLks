@@ -11,3 +11,4 @@ class Micropost < ApplicationRecord
     Comment.where("micropost_id = :micropost_id", micropost_id: id)
   end
 end
+fdsfsfs
