@@ -1,14 +1,37 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <aside class="col-md-6">
+    <section class="microposts">
+      <span class="user"><%= link_to @micropost.user.name, @micropost.user %></span>
+      <span class="content">
+        <%= @micropost.content %>
+        <%= image_tag @micropost.picture.url if @micropost.picture? %>
+      </span>
+      <span class="timestamp">
+        Posted
+        <% if @micropost.created_at === Date.today %>
+           <%= @micropost.created_at.strftime("Today %b %d") %>
+        <% else %>
+           <%= @micropost.created_at.strftime("%A %b %d") %>
+        <% end %>
+      </span>
+    </section>
+    <% if logged_in? %>
+      <% if current_user.following?(@micropost.user)  || current_user == @micropost.user %>
+      <section class="micropost_form">
+        <%= render 'comments/comment_form' %>
+      </section>
+      <% end %>
+    <% end %>
+  </aside>
+  <aside class="col-md-4">
+    <% if @feed_comment.any? %>
+      <h3>Comment (<%= @micropost.comments.count %>)</h3>
+      <ol class="microposts">
+        <%= render @feed_comment %>
+      </ol>
+    <% end %>
+  </aside>
+</div>
 
-<p>
-  <strong>Content:</strong>
-  <%= @micropost.content %>
-</p>
 
-<p>
-  <strong>User:</strong>
-  <%= @micropost.user_id %>
-</p>
 
-<%= link_to 'Edit', edit_micropost_path(@micropost) %> |
-<%= link_to 'Back', microposts_path %>

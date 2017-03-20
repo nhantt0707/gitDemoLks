@@ -1,0 +1,6 @@
+<% if @comment_feed.any? %>
+  <ol class="microposts">
+    <%= render @comment_feed %>
+  </ol>
+  <%= will_paginate @comment_feed %>
+<% end %>
